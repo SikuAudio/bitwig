@@ -3,6 +3,8 @@ This project is a fork of [mfeyx's](https://github.com/mfeyx/akai-midimix-bitwig
 
 Forked by [Siku](https://siku.studio/)
 
+(Download ZIP)[https://github.com/SikuAudio/akai-midimix-bitwig/archive/refs/heads/main.zip]
+
 # Load the scripts
 
 1. Load the `bitwig.midimix` file into the Akai MidiMix Editor and send it to the hardware.
