@@ -20,8 +20,10 @@ This script is based on my needs. Feel free to modify it :)
 - The `encoders` will control the FX sends, where the top row handles `FX1`, the middle row `FX2`, and the bottom row handles `FX3`.
 - The `encoders` will also auto map to project remote control pages. By default I set it to 3 pages of remotes. `Bank Left` and `Bank Right` work as expected.
 - `Bank Left` and `Bank Right` are setup to navigate 4 total pages by default. The first page is the `Sends` page and it controls 3 sends per channel, setup vertically. The next 3 pages correspond to the 9 `Project Remote Controls` pages, and the `knobs` are layed out horizontaly to fit 3 `Project Remote Controls` pages per `bank` page.
+- To change the amount of pages, simply edit the value `PAGES_AMOUNT` in `midimix.control.js`. You don't need to use multiples of 3.
 - The `Solo` button functions as a `Shift` button to allow soloing channels (which is the default MIDI Mix functionality), and additionally shows a popup for which `Bank` page you are currently on (useful when performing live).
 - `Send All` works as intented, but only when `Takeover Mode` is set to `Immediate`. As I don't really use it I have no plans to modify this.
+- NOTE: Each `knob` automap function can be overwritten by the custom mapping in the Bitwig editor. The rest of the automaps will be unaffected, but the mapped knob will be the same across all `Bank` pages
 
 # To do
 
