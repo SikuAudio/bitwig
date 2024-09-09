@@ -5,11 +5,16 @@ Forked by [Siku](https://siku.studio/)
 
 [Download ZIP](https://github.com/SikuAudio/akai-midimix-bitwig/archive/refs/heads/main.zip)
 
-# Load the scripts
+# Load the scripts & template
 
 1. Load the `bitwig.midimix` file into the Akai MidiMix Editor and send it to the hardware.
 2. Copy the `midimix.control.js` file into the `Controller Scripts` in your `Bitwig Studio` folder (or where you configured it).
-3. Open `Bitwig` and add the controller.
+3. Copy the folder `MIDI Mix.bwtemplate` to `...\Bitwig\Library\Templates\`.
+4. Open `Bitwig` and add the controller.
+5. In your Bitwig `Dashboard`, go to `My Templates` and you should find `MIDI Mix` in the list now.
+
+# Install Bitwig Template
+
 
 # How it's set up
 
