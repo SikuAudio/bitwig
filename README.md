@@ -38,6 +38,7 @@ This script is based on my needs. Feel free to modify it :)
 - `Solo` LEDs are not working
 
 # Plans
+Please do let me know if you encounter any issues.
 
 I might make another version where instead of using `Project Remotes`, I will map to individual `Track Remotes` and align the knobs vertically across 3 `Bank` pages. If this interests you let me know and I may bump it up my list of priorities.
 
