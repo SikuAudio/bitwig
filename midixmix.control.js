@@ -1,13 +1,21 @@
 loadAPI(18)
 
-host.defineController("Akai", "Akai Midimix", "0.1", "7b8cd61c-2718-4d77-80b5-a2103f92b69c", "mfeyx")
+host.defineController("Akai", "Akai Midimix", "0.1", "cade9554-293e-494c-8e38-4da5fc20c353", "Siku")
 host.addDeviceNameBasedDiscoveryPair(["MIDI Mix"], ["MIDI Mix"])
 host.defineMidiPorts(1, 1)
+
+
+/* ------------------------------------------------------ */
+/*                      REMOTE PAGES                      */
+/* ------------------------------------------------------ */
+var pages = []
+const PAGE_AMOUNT = 9
+
 
 /* ------------------------------------------------------ */
 /*                    DEBUGGING FEATURE                   */
 /* ------------------------------------------------------ */
-var DEBUG = false
+var DEBUG = true
 
 function debug(bool = false) {
    DEBUG = bool
@@ -41,15 +49,17 @@ const CHAN = "chanVolume"
 
 // do not change those values,
 // they are called like the api methods, e.g. channel.solo()
-const SOLO = "solo"
 const MUTE = "mute"
 const RECO = "arm"
+const SOLO = "solo"
 
 
 /* ------------------------------------------------------ */
 /*                         CONSTS                         */
 /* ------------------------------------------------------ */
 var SHIFT_PRESSED = false
+var SELECTED_PAGE = 0
+
 
 /* ------------------------------------------------------ */
 /*                        HARDWARE                        */
@@ -62,30 +72,30 @@ const SHIFT = 0x1B  // 27
 
 /* ----------------------- ENCODER ---------------------- */
 const KNOBS = {
-   "30": { send: 0, chan: 0 },
-   "31": { send: 0, chan: 1 },
-   "32": { send: 0, chan: 2 },
-   "33": { send: 0, chan: 3 },
-   "34": { send: 0, chan: 4 },
-   "35": { send: 0, chan: 5 },
-   "36": { send: 0, chan: 6 },
-   "37": { send: 0, chan: 7 },
-   "38": { send: 1, chan: 0 },
-   "39": { send: 1, chan: 1 },
-   "40": { send: 1, chan: 2 },
-   "41": { send: 1, chan: 3 },
-   "42": { send: 1, chan: 4 },
-   "43": { send: 1, chan: 5 },
-   "44": { send: 1, chan: 6 },
-   "45": { send: 1, chan: 7 },
-   "46": { send: 2, chan: 0 },
-   "47": { send: 2, chan: 1 },
-   "48": { send: 2, chan: 2 },
-   "49": { send: 2, chan: 3 },
-   "50": { send: 2, chan: 4 },
-   "51": { send: 2, chan: 5 },
-   "52": { send: 2, chan: 6 },
-   "53": { send: 2, chan: 7 }
+   "30": { send: 0, chan: 0, param: 0, page: 0,},
+   "31": { send: 0, chan: 1, param: 1, page: 0,},
+   "32": { send: 0, chan: 2, param: 2, page: 0,},
+   "33": { send: 0, chan: 3, param: 3, page: 0,},
+   "34": { send: 0, chan: 4, param: 4, page: 0,},
+   "35": { send: 0, chan: 5, param: 5, page: 0,},
+   "36": { send: 0, chan: 6, param: 6, page: 0,},
+   "37": { send: 0, chan: 7, param: 7, page: 0,},
+   "38": { send: 1, chan: 0, param: 0, page: 1,},
+   "39": { send: 1, chan: 1, param: 1, page: 1,},
+   "40": { send: 1, chan: 2, param: 2, page: 1,},
+   "41": { send: 1, chan: 3, param: 3, page: 1,},
+   "42": { send: 1, chan: 4, param: 4, page: 1,},
+   "43": { send: 1, chan: 5, param: 5, page: 1,},
+   "44": { send: 1, chan: 6, param: 6, page: 1,},
+   "45": { send: 1, chan: 7, param: 7, page: 1,},
+   "46": { send: 2, chan: 0, param: 0, page: 2,},
+   "47": { send: 2, chan: 1, param: 1, page: 2,},
+   "48": { send: 2, chan: 2, param: 2, page: 2,},
+   "49": { send: 2, chan: 3, param: 3, page: 2,},
+   "50": { send: 2, chan: 4, param: 4, page: 2,},
+   "51": { send: 2, chan: 5, param: 5, page: 2,},
+   "52": { send: 2, chan: 6, param: 6, page: 2,},
+   "53": { send: 2, chan: 7, param: 7, page: 2,}
 }
 
 /* ----------------- CHANNEL CONTROLLER ----------------- */
@@ -94,15 +104,15 @@ const CC_MAPPING = {
       lo: 30,
       hi: 53,
    },
-   [SOLO]: {
+   [MUTE]: {
       lo: 12,
       hi: 19
    },
-   [MUTE]: {
+   [RECO]: {
       lo: 2,
       hi: 9,
    },
-   [RECO]: {
+   [SOLO]: {
       lo: 20,
       hi: 27,
    },
@@ -114,20 +124,20 @@ const CC_MAPPING = {
 }
 
 /* ------------------------- LED ------------------------ */
-const LED_SOLO = [0x01, 0x04, 0x07, 0x0A, 0x0D, 0x10, 0x13, 0x16]
-const LED_MUTE = [0x03, 0x06, 0x09, 0x0C, 0x0F, 0x12, 0x15, 0x18]
-const LED_RECO = [0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B]  // ! NOT WORKING ATM
+const LED_MUTE = [0x01, 0x04, 0x07, 0x0A, 0x0D, 0x10, 0x13, 0x16]
+const LED_RECO = [0x03, 0x06, 0x09, 0x0C, 0x0F, 0x12, 0x15, 0x18]
+const LED_SOLO = [0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B]  // ! NOT WORKING ATM
 
 const LED_MAPPING = {
-   [SOLO]: LED_SOLO, // row 1
-   [RECO]: LED_RECO, // shift + row 1
-   [MUTE]: LED_MUTE, // row 2
+   [MUTE]: LED_MUTE, // row 1
+   [SOLO]: LED_SOLO, // shift + row 1
+   [RECO]: LED_RECO, // row 2
 }
 
 const LED_CACHE = {
-   [SOLO]: [0, 0, 0, 0, 0, 0, 0, 0],
    [MUTE]: [0, 0, 0, 0, 0, 0, 0, 0],
    [RECO]: [0, 0, 0, 0, 0, 0, 0, 0],
+   [SOLO]: [0, 0, 0, 0, 0, 0, 0, 0],
 }
 
 /* ------------------------------------------------------ */
@@ -172,6 +182,17 @@ function init() {
 
    // main fader
    mainFader = host.createMasterTrack(0)
+
+   // pointer for overall project
+   var project = host.getProject()
+
+   // pointer for project track group, which includes the project remotes
+   var rootTrackGroup = project.getRootTrackGroup()
+
+   // create PAGE_AMOUNT pages of remotes and appends each page to pages array
+   for (let i = 0; i < PAGE_AMOUNT; i++) {
+      pages.push(rootTrackGroup.createCursorRemoteControlsPage("1", 8, `${i + 1}`))
+   }
 }
 
 function exit() {
@@ -188,17 +209,25 @@ function handleNoteOn(cc, value) {
       log(`handleNoteOn -> ${cc} : ${value}`)
       switch (cc) {
          case BANKL:
+            if (SELECTED_PAGE > 0) { SELECTED_PAGE-- }
             log("BANK LEFT ON")
-            break;
+            break
          case BANKR:
+            if (SELECTED_PAGE < Math.ceil(PAGE_AMOUNT / 3)) { SELECTED_PAGE++ }
             log("BANK RIGHT ON")
-            break;
+            break
          case SHIFT:
             SHIFT_PRESSED = !SHIFT_PRESSED && cc == SHIFT
             log(`SHIFT pressed: ${SHIFT_PRESSED}`)
-            break;
+            break
          default:
-            break;
+            break
+      }
+      log(SELECTED_PAGE)
+      if(SELECTED_PAGE === 0){
+         host.showPopupNotification("Sends")
+      } else {
+         host.showPopupNotification(`Remote Controls Page ${SELECTED_PAGE}`)
       }
       return
    } catch (error) {
@@ -273,47 +302,66 @@ function handleButton(cc, type, value) {
 /* ---------------------- ENCODERS ---------------------- */
 function handleEncoder(cc, value) {
    try {
-      log(`handleEncoder -> ${cc} : ${value}`)
-      var chan_index = KNOBS[cc].chan
-      var send_index = KNOBS[cc].send
-      var channel = trackBank.getChannel(chan_index)
-      channel.getSend(send_index).set(value, 128)
+      log(`handleChannelEncoder -> ${cc} : ${value}`)
+      switch (true) {
+         case SELECTED_PAGE === 0:
+            var chan_index = KNOBS[cc].chan
+            var send_index = KNOBS[cc].send
+            var channel = trackBank.getChannel(chan_index)
+            channel.getSend(send_index).set(value, 128)
+            break;
+         case SELECTED_PAGE > 0:
+            var page_index = KNOBS[cc].page + ((SELECTED_PAGE - 1) * 3)
+            println(`SELECTED_PAGE  = ${SELECTED_PAGE}`)
+            println(`page_index  = ${page_index}`)
+            var param_index = KNOBS[cc].param
+            println(`param_index = ${param_index}`)
+            pages[page_index].getParameter(param_index).set(value, 128)
+            break;
+      }
       return
    } catch (error) {
       handleError(error)
    }
 }
 
+
 /* ------------------------------------------------------ */
 /*                   MIDI INPUT HANDLER                   */
 /* ------------------------------------------------------ */
 function onMidi(status, cc, value) {
-
+   log(`${status} ${cc} ${value}`)
    switch (true) {
       case isNoteOn(status): handleNoteOn(cc, value); break;
       case isNoteOff(status): handleNoteOff(cc, value); break;
 
       case isChannelController(status):
-         // main volume
-         if (cc === CC_MAPPING[MAIN]) { handleMainVolume(cc, value); break; }
+         switch (true) {
+            case isNoteOn(status): handleNoteOn(cc, value); break;
+            case isNoteOff(status): handleNoteOff(cc, value); break;
 
-         // channel volume
-         if (isCCRangeMapped(CHAN, cc)) { handleChannelVolume(cc, value); break; }
+            case isChannelController(status):
+               // main volume
+               if (cc === CC_MAPPING[MAIN]) { handleMainVolume(cc, value); break; }
 
-         // buttons
-         if (isCCRangeMapped(SOLO, cc)) { handleButton(cc, SOLO, value); break; }
-         if (isCCRangeMapped(MUTE, cc)) { handleButton(cc, MUTE, value); break; }
-         if (isCCRangeMapped(RECO, cc)) { handleButton(cc, RECO, value); break; }
+               // channel volume
+               if (isCCRangeMapped(CHAN, cc)) { handleChannelVolume(cc, value); break; }
 
-         // encoders
-         if (isCCRangeMapped(KNOB, cc)) { handleEncoder(cc, value); break; }
+               // buttons
+               if (isCCRangeMapped(SOLO, cc)) { handleButton(cc, SOLO, value); break; }
+               if (isCCRangeMapped(MUTE, cc)) { handleButton(cc, MUTE, value); break; }
+               if (isCCRangeMapped(RECO, cc)) { handleButton(cc, RECO, value); break; }
 
-         // end
-         break;
+               // encoders
+               if (isCCRangeMapped(KNOB, cc)) { handleEncoder(cc, value); break; }
 
-      default:
-         prinltn(`UNKNOWN STATUS: ${status}, cc: ${cc}, value: ${value}`)
-         break;
+               // end
+               break;
+
+            default:
+               println(`UNKNOWN STATUS: ${status}, cc: ${cc}, value: ${value}`)
+               break;
+         }
+         return
    }
-   return
 }
