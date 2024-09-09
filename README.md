@@ -1,4 +1,4 @@
-# akai-midimix-bitwig
+# Akai Midimix for Bitwwig
 Akai MIDIMIX Controller Script
 
 # Load the scripts
