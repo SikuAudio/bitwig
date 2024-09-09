@@ -1,0 +1,10 @@
+{
+	name : "MIDI Mix"
+	author : Siku
+	category : Template
+	description : "Default Bitwig template with 9 pages of Project Remotes setup to be controlled automatically by the Akai MIDIMix. The originla codde belongs to myfex, and I just expanded its functionality to my needs, and made a couple of modifications."
+	url : "https://siku.studio"
+	tags : "akai midimix"
+	show_welcome_screen : false
+	creation_date : 1725857748393
+}
