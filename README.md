@@ -16,7 +16,7 @@ Forked by [Siku](https://siku.studio/)
 This script is based on my needs. Feel free to modify it :)
 
 
-#### The script provides the following functions:
+### The script provides the following functions:
 
 - Channel faders are mapped to Track 1-8, with max values of "0 db"
 - Master fader will handle the main output
