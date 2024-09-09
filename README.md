@@ -1,7 +1,5 @@
 # Akai Midimix Controller Script for Bitwig
-This project is a fork of [mfeyx's](https://github.com/mfeyx/akai-midimix-bitwig) script
-
-Forked by [Siku](https://siku.studio/)
+This project is a fork of [mfeyx's](https://github.com/mfeyx/akai-midimix-bitwig) script forked by me, [Siku](https://siku.studio/).
 
 [Download ZIP](https://github.com/SikuAudio/akai-midimix-bitwig/archive/refs/heads/main.zip)
 
