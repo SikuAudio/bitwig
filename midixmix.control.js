@@ -4,6 +4,7 @@ host.defineController("Akai", "Akai Midimix", "0.1", "cade9554-293e-494c-8e38-4d
 host.addDeviceNameBasedDiscoveryPair(["MIDI Mix"], ["MIDI Mix"])
 host.defineMidiPorts(1, 1)
 
+// https://siku.studio
 
 /* ------------------------------------------------------ */
 /*                      REMOTE PAGES                      */
