@@ -3,7 +3,7 @@ This project is a fork of [mfeyx's](https://github.com/mfeyx/akai-midimix-bitwig
 
 Forked by [Siku](https://siku.studio/)
 
-(Download ZIP)[https://github.com/SikuAudio/akai-midimix-bitwig/archive/refs/heads/main.zip]
+[Download ZIP](https://github.com/SikuAudio/akai-midimix-bitwig/archive/refs/heads/main.zip)
 
 # Load the scripts
 
