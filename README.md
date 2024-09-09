@@ -1,5 +1,5 @@
-# Akai Midimix for Bitwwig
-Akai MIDIMIX Controller Script
+# Akai Midimix for Bitwig
+This project is a fork of [mfeyx's](https://github.com/mfeyx/akai-midimix-bitwig) script
 
 # Load the scripts
 
@@ -16,14 +16,20 @@ This script is based on my needs. Feel free to modify it :)
 
 - Channel faders are mapped to Track 1-8, with max values of "0 db"
 - Master fader will handle the main output
-- `Rec Arm` buttons are mapped to *mute* the channels (since it uses the red led, and for me red is connected to muting channels)
-- The `Mute` buttons are mapped to *solo* the channels (since the yellow LED signals soloed channels for me)
-- If you press `Solo` + `Mute` you are will *rec arm* the specific channel. I use the `Solo` button more like "shift".
+- Reverted `Rec Arm`. `Solo`, and `Mute` to their default positions and functionality.
 - The `encoders` will control the FX sends, where the top row handles `FX1`, the middle row `FX2`, and the bottom row handles `FX3`.
+- The `encoders` will also auto map to project remote control pages. By default I set it to 3 pages of remotes. `Bank Left` and `Bank Right` work as expected.
+- `Bank Left` and `Bank Right` are setup to navigate 4 total pages by default. The first page is the `Sends` page and it controls 3 sends per channel, setup vertically. The next 3 pages correspond to the 9 `Project Remote Controls` pages, and the `knobs` are layed out horizontaly to fit 3 `Project Remote Controls` pages per `bank` page.
+- The `Solo` button functions as a `Shift` button to allow soloing channels (which is the default MIDI Mix functionality), and additionally shows a popup for which `Bank` page you are currently on (useful when performing live).
+- `Send All` works as intented, but only when `Takeover Mode` is set to `Immediate`. As I don't really use it I have no plans to modify this.
 
 # To do
-- `Bank left` and `Bank right` are currently not used.
-- If you *rec arm* the channel (solo+mute), the LEDs are currently not working
+
+- `Bank left` and `Bank right` LEDs are not working.
+- `Solo` LEDs are not working
 
 # Plans
-Currently, I do not have plans to work on the script. Feel free to fork it.
+
+I might make another version where instead of using `Project Remotes`, I will map to individual `Track Remotes` and align the knobs vertically across 3 `Bank` pages. If this interests you let me know and I may bump it up my list of priorities.
+
+I may also put more effort into making all LEDs work, but I'm an amateur at programming and don't know if that's a rabbit hole I want to dive into. If you would like a quick modification and don't know how, feel free to messaage me and if I can, I will do it for you.
