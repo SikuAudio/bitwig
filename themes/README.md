@@ -4,6 +4,7 @@ Still trying to figure out a few things, but it's about 85% done.
 
 ![Screenshot](screenshot.png)
 
+<br>
 
 ### Optional Icon
 To use this instead of the default icon in Windows:
@@ -14,6 +15,7 @@ To use this instead of the default icon in Windows:
 
 ![Bitwig Icon](bitwig.ico)
 
+<br>
 
 ### Optional Splash
 Save the image file to `.../Bitwig Studio/resources/` and change `studio` to whichever version you have.
